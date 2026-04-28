@@ -1,0 +1,295 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>My Task Planner</title>
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body>
+    <header class="app-header">
+      <div class="header-copy">
+        <p class="eyebrow">Personal Productivity</p>
+        <h1>My Task Planner</h1>
+        <p class="subtitle">Organize your daily work, move tasks through progress, and keep everything saved automatically.</p>
+      </div>
+      <div class="header-actions">
+        <div class="status-pill" id="connectionStatus">Connecting</div>
+        <button class="profile-icon-button" id="profileIconButton" type="button" aria-label="View profile" title="View profile" hidden>
+          <span id="profileInitial">P</span>
+        </button>
+        <button class="logout-button" id="logoutButton" type="button" hidden>Logout</button>
+      </div>
+    </header>
+
+    <section class="auth-panel" id="authPanel" aria-labelledby="authTitle">
+      <div class="auth-intro">
+        <p class="eyebrow dark">Private Daily Planner</p>
+        <h2>Login first. Plan everything next.</h2>
+        <p>Your task board, profile, reminders, and progress dashboard stay private to your account.</p>
+        <div class="intro-points">
+          <span>Private account</span>
+          <span>Task dashboard</span>
+          <span>Pending reminders</span>
+        </div>
+      </div>
+      <div class="auth-card">
+        <div>
+          <p class="eyebrow dark">Private Planner</p>
+          <h2 id="authTitle">Login to your own task board</h2>
+          <p class="auth-copy">Create an account or login. Your tasks stay separate from every other user.</p>
+        </div>
+
+        <div class="auth-tabs" role="tablist" aria-label="Authentication mode">
+          <button class="auth-tab active" id="loginTab" type="button">Login</button>
+          <button class="auth-tab" id="signupTab" type="button">Sign Up</button>
+          <button class="auth-tab" id="resetTab" type="button">Reset</button>
+        </div>
+
+        <form class="auth-form" id="authForm">
+          <label>
+            Email
+            <input id="authName" name="email" type="email" placeholder="you@example.com" autocomplete="email" required />
+          </label>
+
+          <div class="signup-fields" id="signupFields" hidden>
+            <label>
+              Full name
+              <input id="fullName" name="fullName" type="text" placeholder="Your full name" autocomplete="name" />
+            </label>
+
+            <div class="form-grid">
+              <label>
+                Gender
+                <select id="gender" name="gender">
+                  <option value="">Select</option>
+                  <option value="Female">Female</option>
+                  <option value="Male">Male</option>
+                  <option value="Other">Other</option>
+                  <option value="Prefer not to say">Prefer not to say</option>
+                </select>
+              </label>
+
+              <label>
+                Phone no
+                <input id="phone" name="phone" type="tel" placeholder="9876543210" autocomplete="tel" />
+              </label>
+            </div>
+          </div>
+
+          <label>
+            <span id="passwordLabel">Password</span>
+            <span class="password-field">
+              <input id="authPassword" name="password" type="password" placeholder="Enter your password" autocomplete="current-password" required />
+              <button class="password-toggle" id="passwordToggle" type="button" aria-label="Show password" title="Show password">
+                <span id="passwordToggleIcon">Show</span>
+              </button>
+            </span>
+          </label>
+
+          <button id="authSubmit" type="submit">Login</button>
+          <p class="auth-message" id="authMessage"></p>
+        </form>
+      </div>
+    </section>
+
+    <main class="layout" id="appShell" hidden>
+      <aside class="sidebar">
+        <section class="profile-card" aria-label="Logged in user">
+          <p>Signed in as</p>
+          <strong id="currentUserName"></strong>
+          <div class="profile-meta" id="profileMeta"></div>
+        </section>
+
+        <section class="task-form-panel" aria-labelledby="formTitle">
+          <h2 id="formTitle">Add New Task</h2>
+          <form id="taskForm">
+            <label>
+              Task title
+              <input id="title" name="title" type="text" placeholder="Finish project report" required />
+            </label>
+
+            <label>
+              Category
+              <input id="course" name="course" type="text" placeholder="Study, work, personal" required />
+            </label>
+
+            <div class="form-grid">
+              <label>
+                Due date
+                <input id="dueDate" name="dueDate" type="date" required />
+              </label>
+
+              <label>
+                Priority
+                <select id="priority" name="priority" required>
+                  <option value="High">High</option>
+                  <option value="Medium" selected>Medium</option>
+                  <option value="Low">Low</option>
+                </select>
+              </label>
+            </div>
+
+            <button type="submit">Add Task</button>
+          </form>
+        </section>
+
+        <section class="focus-card" aria-labelledby="focusTitle">
+          <h2 id="focusTitle">Planner Flow</h2>
+          <ul class="flow-list">
+            <li><span>1</span><strong>Add tasks with priority and due date.</strong></li>
+            <li><span>2</span><strong>Move them from pending to progress.</strong></li>
+            <li><span>3</span><strong>Finish them in the completed column.</strong></li>
+          </ul>
+        </section>
+      </aside>
+
+      <section class="dashboard" aria-label="Task dashboard">
+        <div class="stats-grid">
+          <article class="stat-card total-stat">
+            <span id="totalCount">0</span>
+            <p>Total</p>
+          </article>
+          <article class="stat-card pending-stat">
+            <span id="pendingCount">0</span>
+            <p>Pending</p>
+          </article>
+          <article class="stat-card progress-stat">
+            <span id="progressCount">0</span>
+            <p>Progress</p>
+          </article>
+          <article class="stat-card done-stat">
+            <span id="doneCount">0</span>
+            <p>Done</p>
+          </article>
+          <article class="stat-card today-stat">
+            <span id="todayCount">0</span>
+            <p>Due Today</p>
+          </article>
+          <article class="stat-card high-stat">
+            <span id="highCount">0</span>
+            <p>High Priority</p>
+          </article>
+        </div>
+
+        <div class="toolbar">
+          <div>
+            <h2>Task Board</h2>
+            <p>Add, search, update, complete, and delete your tasks anytime.</p>
+          </div>
+          <div class="toolbar-controls">
+            <input id="searchInput" type="search" placeholder="Search task or course" aria-label="Search task or course" />
+            <select id="statusFilter" aria-label="Filter tasks">
+              <option value="All">All</option>
+              <option value="Pending">Pending</option>
+              <option value="In Progress">In Progress</option>
+              <option value="Completed">Completed</option>
+            </select>
+            <button class="notify-button" id="notifyButton" type="button">Notify Pending</button>
+          </div>
+        </div>
+
+        <div class="task-board" id="taskBoard">
+          <section class="task-column" data-status="Pending">
+            <div class="column-header">
+              <h3>Pending</h3>
+              <span id="pendingBadge">0</span>
+            </div>
+            <div class="task-list" id="pendingList"></div>
+          </section>
+
+          <section class="task-column" data-status="In Progress">
+            <div class="column-header">
+              <h3>In Progress</h3>
+              <span id="progressBadge">0</span>
+            </div>
+            <div class="task-list" id="progressList"></div>
+          </section>
+
+          <section class="task-column completed-column" data-status="Completed">
+            <div class="column-header">
+              <h3>Completed</h3>
+              <span id="doneBadge">0</span>
+            </div>
+            <div class="task-list" id="completedList"></div>
+          </section>
+        </div>
+      </section>
+    </main>
+
+    <div class="profile-drawer" id="profileDrawer" hidden>
+      <div class="profile-drawer-backdrop" id="profileDrawerBackdrop"></div>
+      <aside class="profile-drawer-panel" aria-labelledby="drawerProfileTitle">
+        <div class="drawer-header">
+          <div>
+            <p class="eyebrow dark">My Profile</p>
+            <h2 id="drawerProfileTitle">Account Details</h2>
+          </div>
+          <button class="drawer-close" id="profileDrawerClose" type="button" aria-label="Close profile">Close</button>
+        </div>
+        <div class="drawer-profile-summary">
+          <div class="drawer-avatar" id="drawerAvatar">P</div>
+          <div>
+            <strong id="drawerProfileName"></strong>
+            <p id="drawerProfileEmail"></p>
+          </div>
+        </div>
+        <section class="drawer-edit-card" aria-labelledby="profileTitle">
+          <h3 id="profileTitle">Edit Profile</h3>
+          <form id="profileForm">
+            <label>
+              Full name
+              <input id="profileFullName" name="fullName" type="text" placeholder="Your full name" />
+            </label>
+            <div class="form-grid">
+              <label>
+                Gender
+                <select id="profileGender" name="gender">
+                  <option value="">Select</option>
+                  <option value="Female">Female</option>
+                  <option value="Male">Male</option>
+                  <option value="Other">Other</option>
+                  <option value="Prefer not to say">Prefer not to say</option>
+                </select>
+              </label>
+              <label>
+                Phone no
+                <input id="profilePhone" name="phone" type="tel" placeholder="9876543210" />
+              </label>
+            </div>
+            <label>
+              Email
+              <input id="profileEmail" name="email" type="email" placeholder="you@example.com" />
+            </label>
+            <button type="submit">Save Profile</button>
+          </form>
+        </section>
+      </aside>
+    </div>
+
+    <template id="taskTemplate">
+      <article class="task-card">
+        <div>
+          <div class="task-card-header">
+            <h3></h3>
+            <span class="priority"></span>
+          </div>
+          <p class="meta"></p>
+          <p class="created"></p>
+        </div>
+        <div class="task-actions">
+          <select class="status-select" aria-label="Update task status">
+            <option value="Pending">Pending</option>
+            <option value="In Progress">In Progress</option>
+            <option value="Completed">Completed</option>
+          </select>
+          <button class="delete-button" type="button">Delete</button>
+        </div>
+      </article>
+    </template>
+
+    <div class="toast" id="toast" role="status" aria-live="polite"></div>
+    <script src="/config.js"></script>
+    <script src="app.js"></script>
+  </body>
+</html>

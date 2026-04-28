@@ -1,0 +1,20 @@
+{
+  "name": "my-task-planner",
+  "version": "1.0.0",
+  "description": "A personal task planner with frontend, backend, persistent storage, and deployment-ready scripts.",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js",
+    "dev": "node server.js",
+    "test": "node --test"
+  },
+  "keywords": [
+    "task-planner",
+    "frontend",
+    "backend",
+    "database",
+    "node"
+  ],
+  "author": "",
+  "license": "MIT"
+}
